@@ -6,5 +6,5 @@ import org.hcmus.ln02.model.entity.Actor;
 public interface ActorService {
   List<Actor> getAllActors();
 
-  long saveActor(Actor actor);
+  Long saveActor(Actor actor);
 }

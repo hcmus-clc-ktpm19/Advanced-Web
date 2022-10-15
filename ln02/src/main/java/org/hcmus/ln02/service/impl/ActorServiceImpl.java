@@ -21,7 +21,8 @@ public class ActorServiceImpl implements ActorService {
   }
 
   @Override
-  public long saveActor(Actor actor) {
-    return actorRepository.saveAndFlush(actor).getId();
+  public Long saveActor(Actor actor) {
+    actorRepository.saveAndFlush(actor);
+    return actor.getId();
   }
 }

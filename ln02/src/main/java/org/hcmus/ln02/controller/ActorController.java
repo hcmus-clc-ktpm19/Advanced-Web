@@ -26,7 +26,7 @@ public class ActorController extends AbstractApplicationController {
   }
 
   @PostMapping("save")
-  public long saveActor(@RequestBody ActorDto actorDto) {
+  public Long saveActor(@RequestBody ActorDto actorDto) {
     return actorService.saveActor(applicationMapper.toActorEntity(actorDto));
   }
 }
