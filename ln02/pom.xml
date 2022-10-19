@@ -83,6 +83,28 @@
           </excludes>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>cz.habarta.typescript-generator</groupId>
+        <artifactId>typescript-generator-maven-plugin</artifactId>
+        <version>3.0.1157</version>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>process-classes</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <jsonLibrary>jackson2</jsonLibrary>
+          <classes>
+            <class>org.hcmus.ln02.model.dto.ActorDto</class>
+          </classes>
+          <outputKind>module</outputKind>
+          <outputFile>src/main/resources/static/ts/model.d.ts</outputFile>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

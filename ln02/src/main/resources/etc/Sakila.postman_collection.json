@@ -1,0 +1,63 @@
+{
+	"info": {
+		"_postman_id": "f6de5d05-05bd-4b14-b4a1-98402d3e429d",
+		"name": "Sakila",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14850555"
+	},
+	"item": [
+		{
+			"name": "Get all actors",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/actor/get-all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"actor",
+						"get-all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert new actor",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Tom\",\r\n    \"lastName\": \"Cruise\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/actor/insert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"actor",
+						"insert"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
