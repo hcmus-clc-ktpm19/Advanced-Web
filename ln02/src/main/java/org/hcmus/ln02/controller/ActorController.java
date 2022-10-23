@@ -1,5 +1,6 @@
 package org.hcmus.ln02.controller;
 
+
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/actor")
+@RequestMapping("api/v1/actors")
 @RequiredArgsConstructor
 public class ActorController extends AbstractApplicationController {
 
