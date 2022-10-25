@@ -27,13 +27,13 @@ public class Film {
   @Column(name = "description", columnDefinition = "TEXT")
   private String description;
 
-  @Column(name = "release_year", columnDefinition = "YEAR(4) default null")
+  @Column(name = "release_year", columnDefinition = "YEAR(4)")
   private Integer releaseYear;
 
   @Column(name = "language_id", columnDefinition = "TINYINT(3) UNSIGNED", nullable = false)
   private Long languageId;
 
-  @Column(name = "original_language_id", columnDefinition = "TINYINT(3) UNSIGNED default null")
+  @Column(name = "original_language_id", columnDefinition = "TINYINT(3) UNSIGNED")
   private Long originalLanguageId;
 
   @Column(name = "rental_duration", columnDefinition = "TINYINT(3) UNSIGNED", nullable = false)
@@ -42,20 +42,19 @@ public class Film {
   @Column(name = "rental_rate", columnDefinition = "DECIMAL(4,2)", nullable = false)
   private Double rentalRate = 4.99;
 
-  @Column(name = "length", columnDefinition = "SMALLINT(5) UNSIGNED default null")
+  @Column(name = "length", columnDefinition = "SMALLINT(5) UNSIGNED")
   private Long length;
 
-  @Column(name = "replacement_cost", columnDefinition = "DECIMAL(5,2) default 19.99", nullable = false)
+  @Column(name = "replacement_cost", columnDefinition = "DECIMAL(5,2)", nullable = false)
   private Double replacementCost = 19.99;
 
-//  @Column(name = "rating", columnDefinition = "ENUM('G','PG','PG-13','R','NC-17') default 'G'")
   @Column(name = "rating", columnDefinition = "ENUM('G','PG','PG-13','R','NC-17')")
-  private String rating = "G";
+  private String rating;
 
-  @Column(name = "special_features", columnDefinition = "SET('Trailers','Commentaries','Deleted Scenes','Behind the Scenes') default null")
+  @Column(name = "special_features", columnDefinition = "SET('Trailers','Commentaries','Deleted Scenes','Behind the Scenes')")
   private String specialFeatures;
 
   @UpdateTimestamp
-  @Column(name = "last_update", columnDefinition = "TIMESTAMP default CURRENT_TIMESTAMP", nullable = false)
+  @Column(name = "last_update", columnDefinition = "TIMESTAMP", nullable = false)
   private LocalDateTime lastUpdate;
 }

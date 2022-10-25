@@ -41,38 +41,4 @@ public class FilmController extends AbstractApplicationController {
     FilmDto savedFilmDto = applicationMapper.toFilmDto(filmService.saveFilm(applicationMapper.toFilmEntity(filmDto)));
     return new ResponseEntity<>(savedFilmDto, HttpStatus.CREATED);
   }
-  // validate field values
-  @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-//    return new ResponseEntity<>(ex.getBindingResult().getFieldError().getDefaultMessage(), HttpStatus.BAD_REQUEST);
-    Map<String, String> response = new HashMap<>();
-    response.put("timestamp", String.valueOf(LocalDateTime.now()));
-    response.put("status", "500");
-    response.put("error", "Internal Server Error");
-    response.put("message", ex.getBindingResult().getFieldError().getDefaultMessage());
-    response.put("path", "/api/v1/films");
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-  }
-
-  @ExceptionHandler(SQLException.class)
-  public ResponseEntity<Map<String, String>> handleSQLExceptions(SQLException ex) {
-    Map<String, String> response = new HashMap<>();
-    response.put("timestamp", String.valueOf(LocalDateTime.now()));
-    response.put("status", "500");
-    response.put("error", "Internal Server Error");
-    response.put("message", ex.getMessage());
-    response.put("path", "/api/v1/films");
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-  }
-  // validate datatype
-  @ExceptionHandler(InvalidFormatException.class)
-  public ResponseEntity<Map<String, String>> handleInvalidFormatExceptions(InvalidFormatException ex) {
-    Map<String, String> response = new HashMap<>();
-    response.put("timestamp", String.valueOf(LocalDateTime.now()));
-    response.put("status", "500");
-    response.put("error", "Internal Server Error");
-    response.put("message", ex.getOriginalMessage());
-    response.put("path", "/api/v1/films");
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-  }
 }

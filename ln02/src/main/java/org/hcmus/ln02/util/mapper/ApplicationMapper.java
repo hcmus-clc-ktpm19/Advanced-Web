@@ -33,10 +33,11 @@ public class ApplicationMapper {
       return actor;
     }
   }
-  public FilmDto toFilmDto(Film film){
-    if (film == null){
+
+  public FilmDto toFilmDto(Film film) {
+    if (film == null) {
       return null;
-    }else{
+    } else {
       FilmDto filmDto = new FilmDto();
       filmDto.setFilmId(film.getFilmId());
       filmDto.setTitle(film.getTitle());
@@ -53,10 +54,11 @@ public class ApplicationMapper {
       return filmDto;
     }
   }
-  public Film toFilmEntity(FilmDto filmDto){
-    if(filmDto== null) {
+
+  public Film toFilmEntity(FilmDto filmDto) {
+    if (filmDto == null) {
       return null;
-    }else{
+    } else {
       Film film = new Film();
       film.setTitle(filmDto.getTitle());
       film.setDescription(filmDto.getDescription());
