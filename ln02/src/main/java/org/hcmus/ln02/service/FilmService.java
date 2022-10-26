@@ -6,5 +6,6 @@ import org.hcmus.ln02.model.entity.Film;
 
 public interface FilmService {
   List<Film> getAllFilms();
+  Film getFilmById(Long id);
   Film saveFilm(Film film);
 }

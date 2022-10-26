@@ -19,6 +19,11 @@ public class FilmServiceImpl implements FilmService {
   }
 
   @Override
+  public Film getFilmById(Long id) {
+    return filmRepository.findById(id).orElse(null);
+  }
+
+  @Override
   public Film saveFilm(Film film) {
     return filmRepository.saveAndFlush(film);
   }
