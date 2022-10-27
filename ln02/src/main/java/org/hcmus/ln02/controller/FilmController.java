@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.hcmus.ln02.model.dto.FilmDto;
 import org.hcmus.ln02.model.entity.Film;
 import org.hcmus.ln02.service.FilmService;
+import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,7 @@ public class FilmController extends AbstractApplicationController {
   }
 
   @GetMapping("/{id}")
-  @Operation(summary = "Get a film by its id")
+  @Operation(summary = "Get a film by its id", description = "Get a film by its id")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Found the film",
           content = { @Content(mediaType = "application/json",
@@ -49,7 +50,7 @@ public class FilmController extends AbstractApplicationController {
       @ApiResponse(responseCode = "400", description = "Invalid id supplied",
           content = @Content(mediaType = "application/json",
               schema = @Schema()))})
-  public ResponseEntity<FilmDto> getFilmById(@Parameter(description = "id of film to be searched") @PathVariable long id) {
+  public ResponseEntity<FilmDto> getFilmById(@Parameter(description = "id of film to be searched", required = true, example = "1") @PathVariable long id) {
     Film film = filmService.getFilmById(id);
     if (film == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
