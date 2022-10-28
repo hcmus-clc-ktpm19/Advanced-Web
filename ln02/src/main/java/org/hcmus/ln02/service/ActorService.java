@@ -8,4 +8,8 @@ public interface ActorService {
   List<Actor> getAllActors();
 
   Long saveActor(Actor actor);
+
+  Long updateActor(Actor actor);
+
+  void deleteActor(Long id);
 }

@@ -1,8 +1,10 @@
 package org.hcmus.ln02.util.mapper;
 
 import org.hcmus.ln02.model.dto.ActorDto;
+import org.hcmus.ln02.model.dto.CategoryDto;
 import org.hcmus.ln02.model.dto.FilmDto;
 import org.hcmus.ln02.model.entity.Actor;
+import org.hcmus.ln02.model.entity.Category;
 import org.hcmus.ln02.model.entity.Film;
 import org.springframework.stereotype.Component;
 
@@ -72,6 +74,30 @@ public class ApplicationMapper {
       film.setRating(filmDto.getRating());
       film.setSpecialFeatures(filmDto.getSpecialFeatures());
       return film;
+    }
+  }
+
+  public CategoryDto toCategoryDto(Category category) {
+    if (category == null) {
+      return null;
+    } else {
+      CategoryDto categoryDto = new CategoryDto();
+      categoryDto.setCategoryId(category.getCategoryId());
+      categoryDto.setName(category.getName());
+      categoryDto.setLastUpdate(category.getLastUpdate());
+      return categoryDto;
+    }
+  }
+
+  public Category toCategoryEntity(CategoryDto categoryDto) {
+    if (categoryDto == null) {
+      return null;
+    } else {
+      Category category = new Category();
+      category.setCategoryId(categoryDto.getCategoryId());
+      category.setName(categoryDto.getName());
+      category.setLastUpdate(categoryDto.getLastUpdate());
+      return category;
     }
   }
 }

@@ -30,6 +30,9 @@ public class Actor {
   @Column(name = "last_update", columnDefinition = "TIMESTAMP")
   private LocalDateTime lastUpdate;
 
+  @Column(name = "deleted")
+  private boolean deleted;
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

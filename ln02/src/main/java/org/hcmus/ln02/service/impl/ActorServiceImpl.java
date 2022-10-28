@@ -1,7 +1,9 @@
 package org.hcmus.ln02.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.hcmus.ln02.exception.ActorNotFound;
 import org.hcmus.ln02.model.entity.Actor;
 import org.hcmus.ln02.repository.ActorRepository;
 import org.hcmus.ln02.service.ActorService;
@@ -17,12 +19,41 @@ public class ActorServiceImpl implements ActorService {
 
   @Override
   public List<Actor> getAllActors() {
-    return actorRepository.findAll();
+    return actorRepository
+        .findAll()
+        .stream()
+        .filter(actor -> !actor.isDeleted())
+        .collect(Collectors.toList());
   }
 
   @Override
   public Long saveActor(Actor actor) {
     actorRepository.saveAndFlush(actor);
     return actor.getId();
+  }
+
+  @Override
+  public Long updateActor(Actor actor) {
+    Actor updatedActor = actorRepository.findById(actor.getId()).orElseThrow(() -> new ActorNotFound("Actor not found"));
+    if (updatedActor.isDeleted()) {
+      throw new ActorNotFound("Actor not found");
+    }
+
+    updatedActor.setFirstName(actor.getFirstName());
+    updatedActor.setLastName(actor.getLastName());
+
+    actorRepository.save(updatedActor);
+    return updatedActor.getId();
+  }
+
+  @Override
+  public void deleteActor(Long id) {
+    Actor actor = actorRepository.findById(id).orElseThrow(() -> new ActorNotFound("Actor not found"));
+    if (actor.isDeleted()) {
+      throw new ActorNotFound("Actor not found");
+    }
+
+    actor.setDeleted(true);
+    actorRepository.save(actor);
   }
 }
