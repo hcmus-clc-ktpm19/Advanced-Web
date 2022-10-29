@@ -24,16 +24,16 @@ public class ExceptionController extends AbstractApplicationController {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
   }
 
-  @ExceptionHandler(value = NotFoundException.class)
+  @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorDto> handleActorNotFound(NotFoundException ex) {
     ErrorDto response = applicationMapper.toErrorDto(
         LocalDateTime.now(),
-        HttpStatus.NO_CONTENT,
+        HttpStatus.NOT_FOUND,
         "Not Found",
         ex.getMessage(),
         null
     );
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
   }
 
   @ExceptionHandler(Throwable.class)
