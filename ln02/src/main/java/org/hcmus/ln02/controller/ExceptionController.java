@@ -1,10 +1,8 @@
 package org.hcmus.ln02.controller;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import org.hcmus.ln02.exception.NotFoundException;
+import org.hcmus.ln02.model.dto.ErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,28 +10,41 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ExceptionController {
+public class ExceptionController extends AbstractApplicationController {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-    Map<String, String> response = new HashMap<>();
-    response.put("timestamp", String.valueOf(LocalDateTime.now()));
-    response.put("status", "400");
-    response.put("error", "Bad Request");
-    response.put("message", ex.getBindingResult().getFieldError().getDefaultMessage());
-    response.put("path", "/api/v1/films");
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+  public ResponseEntity<ErrorDto> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    ErrorDto response = applicationMapper.toErrorDto(
+        LocalDateTime.now(),
+        HttpStatus.BAD_REQUEST,
+        "Bad Request",
+        ex.getBindingResult().getFieldError().getDefaultMessage(),
+        "/api/v1/films"
+    );
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
   }
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<Map<String, String>> handleExceptions(Exception ex) {
-    Map<String, String> response = new HashMap<>();
-    response.put("timestamp", String.valueOf(LocalDateTime.now()));
-    response.put("status", "500");
-    response.put("error", "Internal Server Error");
-    response.put("message", ex.getMessage());
-    response.put("path", "/api/v1/films");
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+  @ExceptionHandler(value = NotFoundException.class)
+  public ResponseEntity<ErrorDto> handleActorNotFound(NotFoundException ex) {
+    ErrorDto response = applicationMapper.toErrorDto(
+        LocalDateTime.now(),
+        HttpStatus.NO_CONTENT,
+        "Not Found",
+        ex.getMessage(),
+        null
+    );
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
   }
 
+  @ExceptionHandler(Throwable.class)
+  public ResponseEntity<ErrorDto> handleExceptions(Exception ex) {
+    ErrorDto response = applicationMapper.toErrorDto(
+        LocalDateTime.now(),
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        "Internal Server Error",
+        ex.getMessage(),
+        null
+    );
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+  }
 }

@@ -1,15 +1,18 @@
 package org.hcmus.ln02.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.hcmus.ln02.model.dto.ActorDto;
 import org.hcmus.ln02.service.ActorService;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +27,10 @@ public class ActorController extends AbstractApplicationController {
 
   private final ActorService actorService;
 
+  @Operation(summary = "Get all actors")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ActorDto.class))),
+  })
   @GetMapping
   public List<ActorDto> getAllActors() {
     return actorService.getAllActors().stream()
@@ -31,20 +38,28 @@ public class ActorController extends AbstractApplicationController {
         .collect(Collectors.toList());
   }
 
+  @Operation(
+      summary = "Save new actor",
+      description = "Input first name and last name for saving new actor, id will be generated automatically. Return the saved actor's id"
+  )
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "201",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ActorDto.class))
+      ),
+  })
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Long saveActor(@RequestBody ActorDto actorDto) {
     return actorService.saveActor(applicationMapper.toActorEntity(actorDto));
   }
 
+  @Operation(summary = "Update actor by id", description = "Update actor's first name and last name, id is required. Return the updated actor's id")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ActorDto.class))),
+      @ApiResponse(responseCode = "204", description = "Actor not found", content = @Content),
+  })
   @PutMapping
   public Long updateActorById(@RequestBody ActorDto actorDto) {
     return actorService.updateActor(applicationMapper.toActorEntity(actorDto));
-  }
-
-  @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteActorById(@PathVariable Long id) {
-    actorService.deleteActor(id);
   }
 }

@@ -1,11 +1,14 @@
 package org.hcmus.ln02.util.mapper;
 
+import java.time.LocalDateTime;
 import org.hcmus.ln02.model.dto.ActorDto;
 import org.hcmus.ln02.model.dto.CategoryDto;
+import org.hcmus.ln02.model.dto.ErrorDto;
 import org.hcmus.ln02.model.dto.FilmDto;
 import org.hcmus.ln02.model.entity.Actor;
 import org.hcmus.ln02.model.entity.Category;
 import org.hcmus.ln02.model.entity.Film;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 
@@ -99,5 +102,15 @@ public class ApplicationMapper {
       category.setLastUpdate(categoryDto.getLastUpdate());
       return category;
     }
+  }
+
+  public ErrorDto toErrorDto(LocalDateTime timestamp, HttpStatus status, String error, String message, String path) {
+    ErrorDto errorDto = new ErrorDto();
+    errorDto.setTimestamp(timestamp);
+    errorDto.setStatus(status);
+    errorDto.setError(error);
+    errorDto.setMessage(message);
+    errorDto.setPath(path);
+    return errorDto;
   }
 }

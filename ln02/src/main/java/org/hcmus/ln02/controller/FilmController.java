@@ -10,12 +10,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hcmus.ln02.model.dto.ErrorDto;
 import org.hcmus.ln02.model.dto.FilmDto;
 import org.hcmus.ln02.model.entity.Film;
 import org.hcmus.ln02.service.FilmService;
-import org.springframework.context.annotation.Description;
+import org.hcmus.ln02.service.FilmTextService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,8 @@ public class FilmController extends AbstractApplicationController {
 
   private final FilmService filmService;
 
+  private final FilmTextService filmTextService;
+
   @GetMapping
   @Operation(summary = "Get all films")
   public ResponseEntity<List<FilmDto>> getAllFilms() {
@@ -41,16 +45,19 @@ public class FilmController extends AbstractApplicationController {
     return new ResponseEntity<>(filmDtoList, HttpStatus.OK);
   }
 
-  @GetMapping("/{id}")
-  @Operation(summary = "Get a film by its id", description = "Get a film by its id")
+  @Operation(summary = "Get film by id")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Found the film",
-          content = { @Content(mediaType = "application/json",
-              schema = @Schema(implementation = Film.class)) }),
+          content = {
+              @Content(mediaType = "application/json", schema = @Schema(implementation = Film.class))}
+      ),
       @ApiResponse(responseCode = "400", description = "Invalid id supplied",
-          content = @Content(mediaType = "application/json",
-              schema = @Schema()))})
-  public ResponseEntity<FilmDto> getFilmById(@Parameter(description = "id of film to be searched", required = true, example = "1") @PathVariable long id) {
+          content = @Content
+      )})
+  @GetMapping("/{id}")
+  public ResponseEntity<FilmDto> getFilmById(
+      @Parameter(description = "id of film to be searched", required = true, example = "1")
+      @PathVariable long id) {
     Film film = filmService.getFilmById(id);
     if (film == null) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -62,13 +69,27 @@ public class FilmController extends AbstractApplicationController {
   @Operation(summary = "Insert a new film")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Inserted the film",
-          content = { @Content(mediaType = "application/json",
-              schema = @Schema(implementation = Film.class)) }),
+          content = {
+              @Content(mediaType = "application/json", schema = @Schema(implementation = Film.class))
+          }),
       @ApiResponse(responseCode = "500", description = "Invalid film supplied",
-          content = @Content(mediaType = "application/json",
-              schema = @Schema()))})
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class)))
+  })
   public ResponseEntity<FilmDto> saveFilm(@Valid @RequestBody FilmDto filmDto) {
-    FilmDto savedFilmDto = applicationMapper.toFilmDto(filmService.saveFilm(applicationMapper.toFilmEntity(filmDto)));
+    FilmDto savedFilmDto = applicationMapper.toFilmDto(
+        filmService.saveFilm(applicationMapper.toFilmEntity(filmDto)));
     return new ResponseEntity<>(savedFilmDto, HttpStatus.CREATED);
+  }
+
+  @DeleteMapping("/text/{id}")
+  @Operation(summary = "Delete film text by id", description = "Delete a film text by its id, id is required")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "The film text has been deleted", content = @Content),
+      @ApiResponse(responseCode = "204", description = "Film text not found", content = @Content),
+  })
+  @Parameter(description = "ID of film text to be deleted. ID must be a number", required = true, example = "1", name = "id")
+  public void deleteFilmTextById(
+      @PathVariable long id) {
+    filmTextService.deleteFilmTextById(id);
   }
 }
