@@ -85,7 +85,6 @@ public class FilmController extends AbstractApplicationController {
   @Operation(summary = "Delete film text by id", description = "Delete a film text by its id, id is required")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "The film text has been deleted", content = @Content),
-      @ApiResponse(responseCode = "204", description = "Film text not found", content = @Content),
   })
   @Parameter(description = "ID of film text to be deleted. ID must be a number", required = true, example = "1", name = "id")
   public void deleteFilmTextById(

@@ -1,5 +1,6 @@
 package org.hcmus.ln02.controller;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.time.LocalDateTime;
 import org.hcmus.ln02.exception.NotFoundException;
 import org.hcmus.ln02.model.dto.ErrorDto;
@@ -24,6 +25,7 @@ public class ExceptionController extends AbstractApplicationController {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
   }
 
+  @ApiResponse(responseCode = "404", description = "Resource not found")
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorDto> handleActorNotFound(NotFoundException ex) {
     ErrorDto response = applicationMapper.toErrorDto(
@@ -36,6 +38,7 @@ public class ExceptionController extends AbstractApplicationController {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
   }
 
+  @ApiResponse(responseCode = "500", description = "Unexpected exception")
   @ExceptionHandler(Throwable.class)
   public ResponseEntity<ErrorDto> handleExceptions(Exception ex) {
     ErrorDto response = applicationMapper.toErrorDto(

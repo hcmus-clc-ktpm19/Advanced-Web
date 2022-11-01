@@ -12,4 +12,4 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui-custom.html
-    operationsSorter: method
+    operations-sorter: method

@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Actor", description = "Actor API")
 @RestController
 @RequestMapping("api/v1/actors")
 @RequiredArgsConstructor
@@ -56,7 +58,6 @@ public class ActorController extends AbstractApplicationController {
   @Operation(summary = "Update actor by id", description = "Update actor's first name and last name, id is required. Return the updated actor's id")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ActorDto.class))),
-      @ApiResponse(responseCode = "204", description = "Actor not found", content = @Content),
   })
   @PutMapping
   public Long updateActorById(@RequestBody ActorDto actorDto) {
