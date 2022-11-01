@@ -1,5 +1,6 @@
 package org.hcmus.ln02.model.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,10 @@ import org.hcmus.ln02.model.entity.Category;
 @NoArgsConstructor
 public class CategoryDto implements Serializable {
 
+  @Schema(hidden = true)
   private Long categoryId;
+  @Schema(description = "Category's name", example = "Food")
   private String name;
+  @Schema(hidden = true)
   private LocalDateTime lastUpdate;
 }
