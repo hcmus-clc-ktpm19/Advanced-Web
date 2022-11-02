@@ -2,15 +2,16 @@ package org.hcmus.ln02.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.hcmus.ln02.model.dto.ErrorDto;
 import org.hcmus.ln02.model.dto.FilmDto;
 import org.hcmus.ln02.model.entity.Film;
 import org.hcmus.ln02.service.FilmService;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Tag(name = "Film", description = "Film API")
 @RestController
 @RequestMapping("/api/v1/films")
 @RequiredArgsConstructor
@@ -70,10 +72,8 @@ public class FilmController extends AbstractApplicationController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Inserted the film",
           content = {
-              @Content(mediaType = "application/json", schema = @Schema(implementation = Film.class))
-          }),
-      @ApiResponse(responseCode = "500", description = "Invalid film supplied",
-          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDto.class)))
+              @Content(mediaType = "application/json", schema = @Schema(implementation = FilmDto.class))
+          })
   })
   public ResponseEntity<FilmDto> saveFilm(@Valid @RequestBody FilmDto filmDto) {
     FilmDto savedFilmDto = applicationMapper.toFilmDto(
