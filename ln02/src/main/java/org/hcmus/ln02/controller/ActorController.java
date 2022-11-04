@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.hcmus.ln02.model.dto.ActorDto;
+import org.hcmus.ln02.model.dto.FilmDto;
 import org.hcmus.ln02.service.ActorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,7 +58,8 @@ public class ActorController extends AbstractApplicationController {
 
   @Operation(summary = "Update actor by id", description = "Update actor's first name and last name, id is required. Return the updated actor's id")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ActorDto.class))),
+      @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(oneOf = {ActorDto.class, FilmDto.class}))),
+      @ApiResponse(responseCode = "202", description = "custom description", content = @Content(mediaType = "application/json", schema = @Schema(oneOf = {ActorDto.class, FilmDto.class}))),
   })
   @PutMapping
   public Long updateActorById(@RequestBody ActorDto actorDto) {

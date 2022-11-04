@@ -25,12 +25,12 @@ public class ExceptionController extends AbstractApplicationController {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
   }
 
-  @ApiResponse(responseCode = "404", description = "Resource not found")
+  @ApiResponse(responseCode = "202", description = "Resource not found")
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorDto> handleActorNotFound(NotFoundException ex) {
     ErrorDto response = applicationMapper.toErrorDto(
         LocalDateTime.now(),
-        HttpStatus.NOT_FOUND,
+        HttpStatus.ACCEPTED,
         "Not Found",
         ex.getMessage(),
         null
