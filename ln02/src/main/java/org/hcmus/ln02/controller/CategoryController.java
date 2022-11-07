@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hcmus.ln02.model.dto.CategoryDto;
 import org.hcmus.ln02.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/categories")
 @AllArgsConstructor
+@Slf4j
 public class CategoryController extends AbstractApplicationController {
 
   private CategoryService categoryService;
@@ -35,6 +37,7 @@ public class CategoryController extends AbstractApplicationController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Long saveCategory(@RequestBody CategoryDto categoryDto) {
+    log.info("Category to save: {}", categoryDto);
     return categoryService.saveCategory(applicationMapper.toCategoryEntity(categoryDto));
   }
 

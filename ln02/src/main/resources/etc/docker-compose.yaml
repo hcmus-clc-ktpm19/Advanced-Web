@@ -18,3 +18,15 @@ services:
             - '3306:3306'
         volumes:
             - '../db/sakila-mysql.sql:/docker-entrypoint-initdb.d/sakila-mysql.sql'
+
+    splunk:
+        image: splunk/splunk
+        container_name: splunk
+        environment:
+            - SPLUNK_START_ARGS=--accept-license
+            - SPLUNK_LICENSE_URI=/tmp/license/splunk.lic
+            - SPLUNK_PASSWORD=@Ahihi123
+        ports:
+            - 8081:8000
+        volumes:
+            - ./splunk.lic:/tmp/license/splunk.lic
