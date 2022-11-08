@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.Data;
-import org.hcmus.ln02.util.mapper.converter.HashMapConverter;
+import org.hcmus.ln02.util.converter.HashMapConverter;
 
 @Entity
 @Table(name = "audit_log")

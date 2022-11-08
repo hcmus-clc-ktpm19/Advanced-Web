@@ -21,4 +21,9 @@ public class AuditLogServiceImpl implements AuditLogService {
     auditLogRepository.saveAndFlush(auditLog);
     return auditLog.getId();
   }
+
+  @Override
+  public void deleteAuditLogs() {
+    auditLogRepository.deleteAll();
+  }
 }
