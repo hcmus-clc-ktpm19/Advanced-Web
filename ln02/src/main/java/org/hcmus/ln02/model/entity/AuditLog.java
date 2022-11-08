@@ -1,5 +1,6 @@
 package org.hcmus.ln02.model.entity;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,4 +23,7 @@ public class AuditLog {
 
   @Column(name = "response", columnDefinition = "TEXT")
   private String response;
+
+  @Column(name = "request_at", columnDefinition = "TIMESTAMP")
+  private LocalDateTime requestAt = LocalDateTime.now();
 }
