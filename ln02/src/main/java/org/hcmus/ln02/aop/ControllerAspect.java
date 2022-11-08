@@ -7,11 +7,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -23,19 +19,22 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Aspect
 @Component
-@RequiredArgsConstructor
 public class ControllerAspect {
 
-  @NonNull
   private final HttpServletRequest request;
 
-  @NonNull
   private final HttpServletResponse response;
 
-  @NonNull
   private final AuditLogService auditLogService;
 
   private AuditLog auditLog;
+
+  public ControllerAspect(HttpServletRequest request, HttpServletResponse response,
+      AuditLogService auditLogService) {
+    this.request = request;
+    this.response = response;
+    this.auditLogService = auditLogService;
+  }
 
   @Pointcut("this(org.hcmus.ln02.controller.AbstractApplicationController)")
   private void abstractApplicationController() { /* Pointcut's alias */ }
@@ -68,14 +67,13 @@ public class ControllerAspect {
   public void beforeAbstractApplicationController() {
     log.info("Before controller");
     auditLog = new AuditLog();
-    auditLog.setRequest(getRequest().toString());
+    auditLog.setRequest(getRequest());
   }
 
   @AfterReturning(value = "abstractApplicationController()", returning = "result")
   public void afterAbstractApplicationController(Object result) {
     log.info("After controller");
-    Map<String, Object> res = getResponse(result);
-    auditLog.setResponse(res.toString());
+    auditLog.setResponse(getResponse(result));
     auditLogService.createAuditLog(auditLog);
   }
 }
