@@ -45,11 +45,7 @@ public class ActorController extends AbstractApplicationController {
       summary = "Save new actor",
       description = "Input first name and last name for saving new actor, id will be generated automatically. Return the saved actor's id"
   )
-  @ApiResponses(value = {
-      @ApiResponse(responseCode = "201",
-          content = @Content(mediaType = "application/json", schema = @Schema(implementation = ActorDto.class))
-      ),
-  })
+  @ApiResponse(responseCode = "201")
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public Long saveActor(@RequestBody ActorDto actorDto) {
