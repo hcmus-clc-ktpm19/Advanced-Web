@@ -13,3 +13,9 @@ springdoc:
   swagger-ui:
     path: /swagger-ui-custom.html
     operations-sorter: method
+
+logging:
+  level:
+    web: info
+  file:
+    path: ln02/src/main/resources/logs
