@@ -18,4 +18,4 @@ logging:
   level:
     web: info
   file:
-    path: ln02/src/main/resources/logs
+    path: ./src/main/resources/logs
