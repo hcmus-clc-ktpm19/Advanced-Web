@@ -38,6 +38,18 @@ public class ExceptionController extends AbstractApplicationController {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
   }
 
+  @ExceptionHandler(IllegalStateException.class)
+  public ResponseEntity<ErrorDto> handleAccessDeniedException(IllegalStateException ex) {
+    ErrorDto response = applicationMapper.toErrorDto(
+        LocalDateTime.now(),
+        HttpStatus.FORBIDDEN,
+        "Forbidden",
+        ex.getMessage(),
+        null
+    );
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+  }
+
   @ApiResponse(responseCode = "500", description = "Unexpected exception")
   @ExceptionHandler(Throwable.class)
   public ResponseEntity<ErrorDto> handleExceptions(Exception ex) {

@@ -1,7 +1,6 @@
 package org.hcmus.sakila.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +13,7 @@ import org.hcmus.sakila.model.entity.Category;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDto implements Serializable {
+public class CategoryDto {
 
   @Schema(hidden = true)
   private Long categoryId;

@@ -17,6 +17,7 @@ import org.hcmus.sakila.service.FilmService;
 import org.hcmus.sakila.service.FilmTextService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RequestMapping("/api/v1/films")
 @RequiredArgsConstructor
 @RestControllerAdvice
+@CrossOrigin
 public class FilmController extends AbstractApplicationController {
 
   private final FilmService filmService;

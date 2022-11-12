@@ -73,6 +73,30 @@
           </excludes>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>cz.habarta.typescript-generator</groupId>
+        <artifactId>typescript-generator-maven-plugin</artifactId>
+        <version>3.0.1157</version>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>process-classes</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <jsonLibrary>jackson2</jsonLibrary>
+          <classes>
+            <class>org.hcmus.sakila.model.dto.ActorDto</class>
+            <class>org.hcmus.sakila.model.dto.FilmDto</class>
+            <class>org.hcmus.sakila.model.dto.CategoryDto</class>
+          </classes>
+          <outputKind>module</outputKind>
+          <outputFile>../sakila-front/src/models/model.d.ts</outputFile>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
