@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.0.1157 on 2022-11-12 12:12:19.
+// Generated using typescript-generator version 3.0.1157 on 2022-11-12 20:59:27.
 
 export interface ActorDto {
     id: number;
@@ -27,4 +27,9 @@ export interface CategoryDto {
     categoryId: number;
     name: string;
     lastUpdate: Date;
+}
+
+export interface UserDto {
+    username: string;
+    password: string;
 }
