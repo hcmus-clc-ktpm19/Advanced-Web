@@ -13,3 +13,5 @@ springdoc:
   swagger-ui:
     path: /swagger-ui-custom.html
     operations-sorter: method
+jwt:
+  secret-key: 'SakilaSecretKey'
