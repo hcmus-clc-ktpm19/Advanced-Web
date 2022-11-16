@@ -1,4 +1,4 @@
-import React, { FormEvent, FormEventHandler, useRef } from 'react';
+import React, { FormEvent, FormEventHandler, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form } from 'react-bootstrap';
 import { UserDto } from '../../models/model';
@@ -13,11 +13,20 @@ const LoginView = (props: Props): JSX.Element => {
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const [validated, setValidated] = useState<boolean>(false);
 
   const handleOnSubmit: FormEventHandler<HTMLFormElement> = async (
     event: FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
+
+    const form: EventTarget & HTMLFormElement = event.currentTarget;
+    if (!form.checkValidity()) {
+      setValidated(true);
+      event.stopPropagation();
+      return;
+    }
+
     onSubmit({
       username: usernameRef.current?.value as string,
       password: passwordRef.current?.value as string
@@ -33,13 +42,22 @@ const LoginView = (props: Props): JSX.Element => {
               <div className="card-body p-5 text-center" style={{ maxHeight: '330px' }}>
                 <h3 className="text-uppercase mb-3">Login</h3>
 
-                <Form className="p-2 d-flex flex-column mb-2" onSubmit={handleOnSubmit}>
+                <Form
+                  noValidate
+                  validated={validated}
+                  className="p-2 d-flex flex-column mb-2"
+                  onSubmit={handleOnSubmit}>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Control type="text" placeholder="Username" ref={usernameRef} />
+                    <Form.Control required type="text" placeholder="Username" ref={usernameRef} />
                   </Form.Group>
 
                   <Form.Group className="mb-4" controlId="formBasicPassword">
-                    <Form.Control type="password" placeholder="Password" ref={passwordRef} />
+                    <Form.Control
+                      required
+                      type="password"
+                      placeholder="Password"
+                      ref={passwordRef}
+                    />
                   </Form.Group>
 
                   <Button className="shadow mt-1" variant="primary" type="submit">
