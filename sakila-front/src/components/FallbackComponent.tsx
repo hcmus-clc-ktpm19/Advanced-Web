@@ -1,0 +1,10 @@
+export default function FallbackComponent() {
+  return (
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: "100vh" }}
+    >
+      <h1>403</h1>
+    </div>
+  );
+}
