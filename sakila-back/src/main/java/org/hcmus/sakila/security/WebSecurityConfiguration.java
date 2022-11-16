@@ -54,7 +54,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     CustomAuthenticationFilter authenticationFilter = new CustomAuthenticationFilter(authenticationManager(), jwtUtil);
-    authenticationFilter.setFilterProcessesUrl(Constants.LOGIN_URL);
+    authenticationFilter.setFilterProcessesUrl(Constants.SIGNIN_URL);
 
     http.cors().and().csrf()
         .disable()
@@ -63,7 +63,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     http.authorizeRequests()
-        .antMatchers(Constants.LOGIN_URL, Constants.REGISTER_URL)
+        .antMatchers(Constants.LOGIN_URL, Constants.REGISTER_URL, Constants.SIGNIN_URL)
         .permitAll();
 
     http.authorizeRequests().antMatchers("/api/v1/films/**")

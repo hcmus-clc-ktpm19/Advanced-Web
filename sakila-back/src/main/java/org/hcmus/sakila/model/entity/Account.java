@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.ToString;
 import org.hcmus.sakila.model.enums.Role;
@@ -16,7 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 @Data
 @Entity
-@Table(name = "Account")
+@Table(name = "Account", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
 @ToString(exclude = {"password"})
 public class Account {
 

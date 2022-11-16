@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hcmus.sakila.common.Constants;
 import org.hcmus.sakila.model.enums.Role;
 import org.hcmus.sakila.util.JwtUtil;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +34,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    if (request.getServletPath().equals("/api/v1/auth/login")) {
+    if (request.getServletPath().equals(Constants.LOGIN_URL) || request.getServletPath().equals(Constants.SIGNIN_URL)) {
       filterChain.doFilter(request, response);
     } else {
       String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);

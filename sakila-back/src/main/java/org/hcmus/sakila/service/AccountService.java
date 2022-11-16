@@ -8,7 +8,7 @@ public interface AccountService {
 
   Account findAccountByUsername(String username);
 
-  Long saveAccount(AccountDto accountDto);
+  String saveAccount(AccountDto accountDto);
 
   void saveAccount(Account account);
 

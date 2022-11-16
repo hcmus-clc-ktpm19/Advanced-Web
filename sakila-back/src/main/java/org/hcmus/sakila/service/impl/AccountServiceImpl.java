@@ -43,7 +43,7 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
   }
 
   @Override
-  public Long saveAccount(AccountDto accountDto) {
+  public String saveAccount(AccountDto accountDto) {
     if (accountRepository.existsByUsername(accountDto.getUsername())) {
       throw new RuntimeException("Account with username already existed" + accountDto.getUsername());
     }
@@ -53,7 +53,7 @@ public class AccountServiceImpl implements AccountService, UserDetailsService {
     account.setPassword(bCryptPasswordEncoder.encode(accountDto.getPassword()));
     account.setRole(accountDto.getRole());
 
-    return accountRepository.save(account).getId();
+    return accountRepository.save(account).getId().toString();
   }
 
   @Override
