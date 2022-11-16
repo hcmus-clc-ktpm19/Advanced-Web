@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hcmus.sakila.model.dto.CategoryDto;
 import org.hcmus.sakila.service.CategoryService;
 import org.springframework.http.HttpStatus;
@@ -23,15 +23,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Tag(name = "Category", description = "Category API")
 @RestController
 @RequestMapping("/api/v1/categories")
-@AllArgsConstructor
+@RequiredArgsConstructor
+@RestControllerAdvice
 @CrossOrigin
 public class CategoryController extends AbstractApplicationController {
 
-  private CategoryService categoryService;
+  private final CategoryService categoryService;
 
   @Operation(summary = "Create new category", description = "Create new category with name and description. Return the created category's id")
   @PostMapping

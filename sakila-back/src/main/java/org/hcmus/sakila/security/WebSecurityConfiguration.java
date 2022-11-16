@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,6 +23,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(
+    prePostEnabled = true,
+    securedEnabled = true,
+    jsr250Enabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Qualifier("AccountServiceImpl")
@@ -66,14 +71,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .antMatchers(Constants.LOGIN_URL, Constants.REGISTER_URL, Constants.SIGNIN_URL, Constants.REFRESH_TOKEN_URL)
         .permitAll();
 
-    http.authorizeRequests().antMatchers("/api/v1/films/**")
-        .hasAnyAuthority(Role.FILM.name()).and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+//    http.authorizeRequests().antMatchers("/api/v1/films/**")
+//        .hasAnyAuthority(Role.FILM.name()).and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
     http.authorizeRequests().antMatchers("api/v1/actors/**")
         .hasAnyAuthority(Role.ACTOR.name()).and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
     http.authorizeRequests().antMatchers("/api/v1/categories/**")
-        .hasAnyAuthority(Role.CATEGORY.name()).and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+        .hasAnyAuthority(Role.CATEGORY.name(), Role.ACTOR.name(), Role.FILM.name()).and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
 
     http.authorizeRequests().anyRequest().authenticated();

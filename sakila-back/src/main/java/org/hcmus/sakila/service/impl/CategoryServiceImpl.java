@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.hcmus.sakila.common.Constants;
 import org.hcmus.sakila.exception.CategoryNotFoundException;
@@ -22,13 +21,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 @Transactional(rollbackFor = Throwable.class)
-@AllArgsConstructor
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
@@ -41,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
   @Value("${system-auth.http.secret-key}")
   private String principalRequestValue;
 
-  private CategoryRepository categoryRepository;
+  private final CategoryRepository categoryRepository;
 
   @Override
   public Long saveCategory(Category category) {
@@ -51,6 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
+  @PreAuthorize("hasAuthority('CATEGORY')")
   public List<Category> getAllCategories() {
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders headers = new HttpHeaders();
@@ -79,6 +80,7 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
+  @PostAuthorize("hasAuthority('CATEGORY')")
   public Category getCategoryByName(String name) {
     return categoryRepository.findByName(name)
         .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
