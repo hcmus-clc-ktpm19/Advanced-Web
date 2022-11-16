@@ -57,6 +57,25 @@
       <artifactId>springdoc-openapi-ui</artifactId>
       <version>1.6.4</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>3.19.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.15</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -92,7 +111,6 @@
             <class>org.hcmus.sakila.model.dto.ActorDto</class>
             <class>org.hcmus.sakila.model.dto.FilmDto</class>
             <class>org.hcmus.sakila.model.dto.CategoryDto</class>
-            <class>org.hcmus.sakila.model.dto.UserDto</class>
           </classes>
           <outputKind>module</outputKind>
           <outputFile>../sakila-front/src/models/model.d.ts</outputFile>
