@@ -1,3 +1,5 @@
+server:
+  port: 9090
 spring:
   jpa:
     hibernate:
@@ -13,3 +15,8 @@ springdoc:
   swagger-ui:
     path: /swagger-ui-custom.html
     operations-sorter: method
+system-auth:
+  http:
+    auth-header-name: X-Auth-Token
+    time-header-name: X-Auth-Time
+    secret-key: sakilaServerSecretKey
