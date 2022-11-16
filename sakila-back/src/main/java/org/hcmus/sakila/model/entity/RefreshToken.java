@@ -1,5 +1,6 @@
 package org.hcmus.sakila.model.entity;
 
+import java.time.Instant;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,6 +23,9 @@ public class RefreshToken {
 
   @Column(nullable = false, unique = true)
   private String token;
+
+  @Column(nullable = false)
+  private Instant expiryDate;
 
   @OneToOne
   @JoinColumn(name = "account_id", referencedColumnName = "id")

@@ -17,6 +17,7 @@ springdoc:
 
 jwt:
   secret-key: 'SakilaSecretKey'
+  RefreshExpirationMs: 120000
 
 system-auth:
   http:

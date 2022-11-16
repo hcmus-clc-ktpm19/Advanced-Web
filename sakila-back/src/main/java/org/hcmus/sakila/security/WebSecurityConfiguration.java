@@ -63,7 +63,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
     http.authorizeRequests()
-        .antMatchers(Constants.LOGIN_URL, Constants.REGISTER_URL, Constants.SIGNIN_URL)
+        .antMatchers(Constants.LOGIN_URL, Constants.REGISTER_URL, Constants.SIGNIN_URL, Constants.REFRESH_TOKEN_URL)
         .permitAll();
 
     http.authorizeRequests().antMatchers("/api/v1/films/**")

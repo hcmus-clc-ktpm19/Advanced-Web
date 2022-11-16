@@ -6,7 +6,7 @@ public final class Constants {
 
   public static final String FULL_LOGIN_URL = "http://localhost:8080/api/v1/auth/login";
 
-  public static final String REFRESH_TOKEN_URL = "http://localhost:8080/api/v1/auth/refreshtoken";
+  public static final String REFRESH_TOKEN_URL = "/api/v1/auth/refreshtoken";
   public static final String LOGIN_URL = "/api/v1/auth/login";
   public static final String SIGNIN_URL = "/api/v1/auth/signin";
   public static final String REGISTER_URL = "/api/v1/auth/register";

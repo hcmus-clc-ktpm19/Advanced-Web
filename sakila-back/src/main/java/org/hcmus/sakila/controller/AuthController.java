@@ -10,8 +10,11 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hcmus.sakila.common.Constants;
+import org.hcmus.sakila.exception.TokenRefreshException;
 import org.hcmus.sakila.model.dto.AccountDto;
 import org.hcmus.sakila.model.dto.JwtResponse;
+import org.hcmus.sakila.model.dto.TokenRefreshRequest;
+import org.hcmus.sakila.model.dto.TokenRefreshResponse;
 import org.hcmus.sakila.model.dto.UserDto;
 import org.hcmus.sakila.model.entity.Account;
 import org.hcmus.sakila.model.entity.RefreshToken;
@@ -45,6 +48,15 @@ public class AuthController {
 
   private final RefreshTokenService refreshTokenService;
 
+  @Operation(
+      summary = "Login",
+      description = "Input your username and password to login.."
+  )
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200",
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = AccountDto.class))
+      ),
+  })
   @PostMapping("/login")
   public ResponseEntity<?> login(@Valid @RequestBody UserDto userDto) {
     try {
@@ -72,7 +84,7 @@ public class AuthController {
   )
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201",
-          content = @Content(mediaType = "text/plain", schema = @Schema(implementation = AccountDto.class))
+          content = @Content(mediaType = "application/json", schema = @Schema(implementation = AccountDto.class))
       ),
   })
   @PostMapping("/register")
@@ -88,5 +100,21 @@ public class AuthController {
       map.put("message", "Account created failed");
       return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
+  }
+
+  @PostMapping("/refreshtoken")
+  public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
+    String requestRefreshToken = request.getRefreshToken();
+
+    return refreshTokenService.findByToken(requestRefreshToken)
+        .map(refreshTokenService::verifyExpiration)
+        .map(RefreshToken::getAccount)
+        .map(user -> {
+          String accessToken = jwtUtil.generateTokenFromUsername(user.getUsername(), user.getRole(), Constants.FULL_LOGIN_URL);
+          refreshTokenService.updateExpiration(requestRefreshToken);
+          return ResponseEntity.ok(new TokenRefreshResponse(accessToken, requestRefreshToken));
+        })
+        .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+            "Refresh token is not in database!"));
   }
 }
