@@ -28,11 +28,22 @@ export const AuthService = {
       localStorage.setItem('token', `Bearer ${res.data.accessToken}`);
       localStorage.setItem('refreshToken', res.data.refreshToken);
 
+      delete axios.defaults.headers.common['Authorization'];
+      axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.accessToken}`;
+
       return res.data;
     } catch (e) {
       if (axios.isAxiosError(e)) {
         throw new Error(e.response?.data.message);
       }
+    }
+  },
+
+  setAuthToken: (token: string) => {
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
     }
   }
 };

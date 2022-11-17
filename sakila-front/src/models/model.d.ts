@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.0.1157 on 2022-11-16 22:36:30.
+// Generated using typescript-generator version 3.0.1157 on 2022-11-17 09:55:18.
 
 export interface ActorDto {
     id: number;

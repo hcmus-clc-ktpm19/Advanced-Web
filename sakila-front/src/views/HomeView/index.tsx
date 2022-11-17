@@ -35,7 +35,6 @@ const HomeView = (): JSX.Element => {
           break;
       }
     } catch (e: any | AxiosError) {
-      console.log(e);
       if (
         axios.isAxiosError(e) &&
         e.response?.data.status === 401 &&

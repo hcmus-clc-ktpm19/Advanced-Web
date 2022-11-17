@@ -74,7 +74,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 //    http.authorizeRequests().antMatchers("/api/v1/films/**")
 //        .hasAnyAuthority(Role.FILM.name()).and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
-    http.authorizeRequests().antMatchers("api/v1/actors/**")
+    http.authorizeRequests().antMatchers("/api/v1/actors/**")
         .hasAnyAuthority(Role.ACTOR.name()).and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
 
     http.authorizeRequests().antMatchers("/api/v1/categories/**")
