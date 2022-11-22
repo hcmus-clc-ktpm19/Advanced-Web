@@ -15,7 +15,7 @@ const CategoryView = (): JSX.Element => {
   const history = useHistory();
 
   useEffect(() => {
-    CategoryService.getCategoryById(category.categoryId).then((response) => {
+    CategoryService.getCategoryById(+id).then((response) => {
       setCategory(response);
     }).catch((error: any | AxiosError) => {
       console.log(error);

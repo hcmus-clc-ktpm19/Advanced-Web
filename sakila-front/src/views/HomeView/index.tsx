@@ -1,4 +1,4 @@
-import {Button, Container, Table} from "react-bootstrap";
+import {Button, Container, Modal, Table} from "react-bootstrap";
 import {CategoryDto} from "../../models/model";
 import React, {useEffect, useState} from "react";
 import {CategoryService} from "../../services/CategoryService";
@@ -8,6 +8,9 @@ import {Link} from "react-router-dom";
 
 const HomeView = (): JSX.Element => {
   const [categories, setCategories] = useState<CategoryDto[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [idToDelete, setIdToDelete] = useState<number>(-1);
+
   useEffect(() => {
     CategoryService.getCategories().then((response) => {
       setCategories(response);
@@ -17,18 +20,30 @@ const HomeView = (): JSX.Element => {
     });
   }, []);
 
-  const deleteCategoryHandler = (id: number): void => {
-    CategoryService.deleteCategoryById(id).then((response) => {
-      console.log(response);
-      setCategories(categories.filter((category) => category.categoryId !== id));
+  const deleteCategoryHandler = (): void => {
+    CategoryService.deleteCategoryById(idToDelete).then((response) => {
+      hideModalHandler();
+      setCategories(categories.filter((category) => category.categoryId !== idToDelete));
     }).catch((error: any | AxiosError) => {
       console.log(error);
     });
   }
 
+  const setUpModalHandler = (idToDelete: number): void => {
+    setIdToDelete(idToDelete);
+    setShowModal(true);
+  }
+
+  const hideModalHandler = (): void => {
+    setShowModal(false);
+  }
+
   return (
       <Container className="px-4 py-5">
         <h2 className="pb-2 border-bottom fw-bold">Home</h2>
+        <Link to={"/categories/insert"}>
+          <Button variant="primary" className="mt-3 mb-3">Add New Category</Button>
+        </Link>
         <Table striped bordered hover>
           <thead>
           <tr>
@@ -53,7 +68,7 @@ const HomeView = (): JSX.Element => {
                       <div className={"more-space"}/>
                       <Button variant={"danger"}
                               className={"float-end"}
-                              onClick={() => deleteCategoryHandler(category.categoryId)}
+                              onClick={() => setUpModalHandler(category.categoryId)}
                       >Delete
                       </Button>
                     </td>
@@ -63,6 +78,22 @@ const HomeView = (): JSX.Element => {
           }
           </tbody>
         </Table>
+        <Modal show={showModal} onHide={hideModalHandler}>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirmation</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Are you sure you want to delete category?
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={deleteCategoryHandler}>
+              Yes
+            </Button>
+            <Button variant="primary" onClick={hideModalHandler}>
+              No
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </Container>
   );
 }
