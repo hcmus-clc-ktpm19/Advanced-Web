@@ -58,14 +58,8 @@
       <version>1.6.4</version>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-websocket</artifactId>
-      <version>5.2.2.RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-messaging</artifactId>
-      <version>5.2.2.RELEASE</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-websocket</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -112,7 +106,7 @@
             <class>org.hcmus.sakila.model.dto.ActorDto</class>
             <class>org.hcmus.sakila.model.dto.FilmDto</class>
             <class>org.hcmus.sakila.model.dto.CategoryDto</class>
-            <class>org.hcmus.sakila.model.dto.UserDto</class>
+            <class>org.hcmus.sakila.model.dto.OutputMessageDto</class>
           </classes>
           <outputKind>module</outputKind>
           <outputFile>../sakila-front/src/models/model.d.ts</outputFile>

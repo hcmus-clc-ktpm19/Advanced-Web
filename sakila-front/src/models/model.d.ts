@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.0.1157 on 2022-11-22 10:32:58.
+// Generated using typescript-generator version 3.0.1157 on 2022-11-22 21:50:56.
 
 export interface ActorDto {
     id: number;
@@ -27,6 +27,11 @@ export interface CategoryDto extends Serializable {
     categoryId: number;
     name: string;
     lastUpdate: Date;
+}
+
+export interface OutputMessageDto {
+    message: string;
+    time: string;
 }
 
 export interface Serializable {
