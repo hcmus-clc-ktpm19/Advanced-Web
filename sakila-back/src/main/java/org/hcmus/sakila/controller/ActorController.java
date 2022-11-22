@@ -14,6 +14,7 @@ import org.hcmus.sakila.model.dto.ActorDto;
 import org.hcmus.sakila.model.dto.FilmDto;
 import org.hcmus.sakila.service.ActorService;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/actors")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ActorController extends AbstractApplicationController {
 
   private final ActorService actorService;
