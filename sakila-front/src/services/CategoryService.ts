@@ -7,9 +7,9 @@ export const CategoryService = {
         await axios.get('http://localhost:8080/api/v1/categories')
     ).data;
   },
-  getCategoryByName: async (name: string): Promise<CategoryDto> => {
+  getCategoryById: async (id: number): Promise<CategoryDto> => {
     return (
-        await axios.get(`http://localhost:8080/api/v1/categories/${name}`)
+        await axios.get(`http://localhost:8080/api/v1/categories/${id}`)
     ).data;
   },
   createCategory: async (categoryDto: CategoryDto): Promise<CategoryDto> => {
@@ -19,5 +19,10 @@ export const CategoryService = {
   },
   deleteCategoryById: async (id: number): Promise<void> => {
     await axios.delete(`http://localhost:8080/api/v1/categories/${id}`);
+  },
+  updateCategory: async (categoryDto: CategoryDto): Promise<CategoryDto> => {
+    return (
+        await axios.put(`http://localhost:8080/api/v1/categories`, categoryDto)
+    ).data;
   }
 };

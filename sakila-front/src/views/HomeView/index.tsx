@@ -1,81 +1,68 @@
-import {Container, ListGroup, ToggleButton, ToggleButtonGroup} from "react-bootstrap";
-import {ActorDto, CategoryDto, FilmDto} from "../../models/model";
-import React, {useState} from "react";
-import {ActorService} from "../../services/ActorServices";
+import {Button, Container, Table} from "react-bootstrap";
+import {CategoryDto} from "../../models/model";
+import React, {useEffect, useState} from "react";
 import {CategoryService} from "../../services/CategoryService";
-import {FilmService} from "../../services/FilmService";
 import {AxiosError} from "axios";
+import {Link} from "react-router-dom";
 
 
 const HomeView = (): JSX.Element => {
-  const [actors, setActors] = useState<ActorDto[]>([]);
   const [categories, setCategories] = useState<CategoryDto[]>([]);
-  const [films, setFilms] = useState<FilmDto[]>([]);
+  useEffect(() => {
+    CategoryService.getCategories().then((response) => {
+      setCategories(response);
+      console.log(response);
+    }).catch((error: any | AxiosError) => {
+      console.log(error);
+    });
+  }, []);
 
-  const handleOnclick = async (event: React.MouseEvent<HTMLElement>) => {
-    const htmlElement = event.target as HTMLElement;
-    setActors([]);
-    setCategories([]);
-    setFilms([]);
-    await fetchData(htmlElement.id);
-  }
-
-  const fetchData = async (apiName: string): Promise<void> => {
-    try {
-      switch (apiName) {
-        case 'actors':
-          setActors(await ActorService.getActors());
-          break;
-        case 'categories':
-          setCategories(await CategoryService.getCategories());
-          break;
-        case 'films':
-          setFilms(await FilmService.getFilms());
-          break;
-      }
-    }catch (e: any | AxiosError){
-      console.error(e);
-    }
+  const deleteCategoryHandler = (id: number): void => {
+    CategoryService.deleteCategoryById(id).then((response) => {
+      console.log(response);
+      setCategories(categories.filter((category) => category.categoryId !== id));
+    }).catch((error: any | AxiosError) => {
+      console.log(error);
+    });
   }
 
   return (
       <Container className="px-4 py-5">
         <h2 className="pb-2 border-bottom fw-bold">Home</h2>
-        <div className="d-flex flex-column justify-content-around py-5">
-          <ToggleButtonGroup
-              type="radio"
-              name="options"
-              aria-label="Basic example"
-              onClick={handleOnclick}>
-            <ToggleButton id="actors" variant="outline-primary fw-bold" value="actors">
-              Actors
-            </ToggleButton>
-            <ToggleButton id="films" variant="outline-primary fw-bold" value="films">
-              Films
-            </ToggleButton>
-            <ToggleButton id="categories" variant="outline-primary fw-bold" value="categories">
-              Categories
-            </ToggleButton>
-          </ToggleButtonGroup>
-
-          <div className="g-4 mt-5 py-2">
-            <ListGroup className="text-center">
-              {actors.length > 0 &&
-                  actors.map((actor: ActorDto) => (
-                      <ListGroup.Item
-                          key={actor.id}>{`${actor.firstName} ${actor.lastName}`}</ListGroup.Item>
-                  ))}
-              {films.length > 0 &&
-                  films.map((film: FilmDto) => (
-                      <ListGroup.Item key={film.filmId}>{film.title}</ListGroup.Item>
-                  ))}
-              {categories.length > 0 &&
-                  categories.map((category: CategoryDto) => (
-                      <ListGroup.Item key={category.categoryId}>{category.name}</ListGroup.Item>
-                  ))}
-            </ListGroup>
-          </div>
-        </div>
+        <Table striped bordered hover>
+          <thead>
+          <tr>
+            <th>Category ID</th>
+            <th>Name</th>
+            <th>Last Update</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          {
+            categories.map(category => {
+              return (
+                  <tr key={category.categoryId}>
+                    <td>{category.categoryId}</td>
+                    <td>{category.name}</td>
+                    <td>{category.lastUpdate.toString()}</td>
+                    <td>
+                      <Link to={`/categories/${category.categoryId}`}>
+                        <Button variant="primary">Edit</Button>
+                      </Link>
+                      <div className={"more-space"}/>
+                      <Button variant={"danger"}
+                              className={"float-end"}
+                              onClick={() => deleteCategoryHandler(category.categoryId)}
+                      >Delete
+                      </Button>
+                    </td>
+                  </tr>
+              )
+            })
+          }
+          </tbody>
+        </Table>
       </Container>
   );
 }

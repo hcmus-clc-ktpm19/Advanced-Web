@@ -6,6 +6,7 @@ import org.hcmus.sakila.model.entity.Category;
 public interface CategoryService {
   Long saveCategory(Category category);
   void deleteCategoryById(Long id);
-  Category getCategoryByName(String name);
+  Category getCategoryById(Long id);
   List<Category> getAllCategories();
+  Category updateCategory(Category category);
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -51,17 +52,17 @@ public class CategoryController extends AbstractApplicationController {
         .collect(Collectors.toList()));
   }
 
-  @Operation(summary = "Get category by name", description = "Find category by its name then return the category's information")
+  @Operation(summary = "Get category by id", description = "Find category by its id then return the category's information")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Found the category",
           content = {
               @Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDto.class))}
       )
   })
-  @GetMapping("/{name}")
-  public ResponseEntity<CategoryDto> getCategoryByName(@PathVariable String name) {
+  @GetMapping("/{id}")
+  public ResponseEntity<CategoryDto> getCategoryById(@PathVariable Long id) {
     return ResponseEntity.ok(
-        applicationMapper.toCategoryDto(categoryService.getCategoryByName(name)));
+        applicationMapper.toCategoryDto(categoryService.getCategoryById(id)));
   }
 
   @Operation(summary = "Delete category by id", description = "Delete a category by its id, id is required")
@@ -73,6 +74,15 @@ public class CategoryController extends AbstractApplicationController {
   public ResponseEntity<Void> deleteCategoryById(@PathVariable Long id) {
     categoryService.deleteCategoryById(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @Operation(summary = "Update category", description = "Update category name")
+  @ApiResponses(value = {
+      @ApiResponse(responseCode = "200", description = "The category has been updated", content = @Content),
+  })
+  @PutMapping
+  public ResponseEntity<CategoryDto> updateCategory(@RequestBody CategoryDto categoryDto) {
+    return ResponseEntity.ok(applicationMapper.toCategoryDto(categoryService.updateCategory(applicationMapper.toCategoryEntity(categoryDto))));
   }
 
 }
