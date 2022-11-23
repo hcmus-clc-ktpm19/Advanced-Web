@@ -46,7 +46,7 @@ const HomeView = (): JSX.Element => {
   }
   connect();
 
-  const sendValue = (messageToSent: OutputMessageDto) => {
+  const sendMessage = (messageToSent: OutputMessageDto) => {
     if (stompClient) {
       console.log(messageToSent);
       stompClient.send("/app/reset", {}, JSON.stringify(messageToSent));
@@ -60,7 +60,7 @@ const HomeView = (): JSX.Element => {
         message: `Category with id ${idToDelete} was deleted`,
         time: new Date().toString(),
       }
-      sendValue(message);
+      sendMessage(message);
       setCategories(categories.filter((category) => category.categoryId !== idToDelete));
     }).catch((error: any | AxiosError) => {
       console.log(error);
@@ -143,8 +143,7 @@ const HomeView = (): JSX.Element => {
           </Modal.Footer>
         </Modal>
         <ToastContainer position="bottom-end" className="p-3">
-          <Toast onClose={handleCloseNotification} show={showNotification} delay={100000}
-                 autohide>
+          <Toast onClose={handleCloseNotification} show={showNotification}>
             <Toast.Header>
               <strong className="me-auto">New Message</strong>
               <small>just now</small>
