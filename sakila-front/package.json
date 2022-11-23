@@ -1,43 +1,53 @@
 {
   "name": "sakila-front",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix",
-    "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write ./**/*.{js,jsx,ts,tsx,css,md,json} --config ./.prettierrc.json",
-    "format": "yarn run prettier:fix && yarn run lint:fix"
-  },
   "dependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "axios": "^1.1.3",
-    "bootstrap": "5.2.2",
+    "net": "^1.0.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.6.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "5.3.4",
-    "sockjs-client": "^1.6.1",
-    "stompjs": "^2.3.3"
+    "react-scripts": "5.0.1",
+    "sockjs-client": "^1.5.2",
+    "stompjs": "^2.3.3",
+    "typescript": "^4.4.2",
+    "bootstrap": "5.2.2",
+    "web-vitals": "^2.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "@types/react": "^18.0.24",
-    "@types/react-dom": "^18.0.8",
-    "@types/react-router-dom": "^5.3.3",
-    "@types/sockjs-client": "^1.5.1",
-    "@types/stompjs": "^2.3.5",
-    "@typescript-eslint/eslint-plugin": "^5.43.0",
-    "@typescript-eslint/parser": "^5.43.0",
-    "@vitejs/plugin-react": "^2.2.0",
-    "eslint": "^8.28.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.31.11",
-    "prettier": "^2.7.1",
-    "typescript": "^4.6.4",
-    "vite": "^3.2.3"
+    "@types/react-router-dom": "^5.3.3"
   }
 }

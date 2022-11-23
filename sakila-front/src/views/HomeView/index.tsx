@@ -1,15 +1,20 @@
-import {Button, Container, Modal, Table} from "react-bootstrap";
-import {CategoryDto} from "../../models/model";
+import {Button, Container, Modal, Table, Toast, ToastContainer} from "react-bootstrap";
+import {CategoryDto, OutputMessageDto} from "../../models/model";
 import React, {useEffect, useState} from "react";
 import {CategoryService} from "../../services/CategoryService";
 import {AxiosError} from "axios";
 import {Link} from "react-router-dom";
+import {WebSocketService} from "../../services/WebSocketService";
+import {useContext} from "react";
+import {Context} from "../../App";
 
 
 const HomeView = (): JSX.Element => {
   const [categories, setCategories] = useState<CategoryDto[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [idToDelete, setIdToDelete] = useState<number>(-1);
+  const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [receivedMessage, setReceivedMessage] = useState<OutputMessageDto>({message: "", time: ""});
 
   useEffect(() => {
     CategoryService.getCategories().then((response) => {
@@ -20,10 +25,26 @@ const HomeView = (): JSX.Element => {
     });
   }, []);
 
+  const stompClient = useContext(Context);
+  console.log('home', stompClient);
+  useEffect(() => {
+    // @ts-ignore
+    stompClient.subscribe('/topic/messages', (messageOutput: Message) => {
+      const message = JSON.parse(messageOutput.body);
+      console.log(message);
+      setReceivedMessage(message);
+      setShowNotification(true);
+    });
+  }, []);
   const deleteCategoryHandler = (): void => {
     CategoryService.deleteCategoryById(idToDelete).then((response) => {
       hideModalHandler();
       setCategories(categories.filter((category) => category.categoryId !== idToDelete));
+      const message: OutputMessageDto = {
+        message: `Category with id ${idToDelete} was deleted`,
+        time: new Date().toString(),
+      }
+      WebSocketService.sendMessage(message);
     }).catch((error: any | AxiosError) => {
       console.log(error);
     });
@@ -94,6 +115,16 @@ const HomeView = (): JSX.Element => {
             </Button>
           </Modal.Footer>
         </Modal>
+        <ToastContainer position="bottom-end" className="p-3">
+          <Toast onClose={() => setShowNotification(false)} show={showNotification} delay={100000}
+                 autohide>
+            <Toast.Header>
+              <strong className="me-auto">New Message</strong>
+              <small>just now</small>
+            </Toast.Header>
+            <Toast.Body style={{textAlign: "left"}}>{receivedMessage.message}</Toast.Body>
+          </Toast>
+        </ToastContainer>
       </Container>
   );
 }
