@@ -21,17 +21,13 @@ export const WebSocketService = {
     // wait the stomp client to connect
     stompClient.connect({}, function (frame: any): any {
       console.log('Connected: ' + frame);
-      // // @ts-ignore
-      // stompClient.subscribe('/topic/messages', (messageOutput: Message) => {
-      //   const message = JSON.parse(messageOutput.body);
-      //   console.log(message);
-      // });
+      // @ts-ignore
+      stompClient.subscribe('/topic/messages', (messageOutput: Message) => {
+        const message = JSON.parse(messageOutput.body);
+        console.log(message);
+      });
     }, function (error: any) {
       console.log(error);
-    });
-    return new Promise((resolve) => {
-      console.log('From connect = ', stompClient);
-      resolve(stompClient);
     });
   },
   sendMessage: (message: OutputMessageDto): void => {

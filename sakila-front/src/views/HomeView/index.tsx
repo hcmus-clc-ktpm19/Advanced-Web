@@ -4,17 +4,18 @@ import React, {useEffect, useState} from "react";
 import {CategoryService} from "../../services/CategoryService";
 import {AxiosError} from "axios";
 import {Link} from "react-router-dom";
-import {WebSocketService} from "../../services/WebSocketService";
-import {useContext} from "react";
-import {Context} from "../../App";
+// @ts-ignore
+import SockJS from 'sockjs-client';
+// @ts-ignore
+import {Client, Frame, Message, over} from 'stompjs';
 
-
+var stompClient: Client = null;
 const HomeView = (): JSX.Element => {
   const [categories, setCategories] = useState<CategoryDto[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [idToDelete, setIdToDelete] = useState<number>(-1);
   const [showNotification, setShowNotification] = useState<boolean>(false);
-  const [receivedMessage, setReceivedMessage] = useState<OutputMessageDto>({message: "", time: ""});
+  const [receivedMessage, setReceivedMessage] = useState<OutputMessageDto>({message: "", time:""});
 
   useEffect(() => {
     CategoryService.getCategories().then((response) => {
@@ -25,26 +26,42 @@ const HomeView = (): JSX.Element => {
     });
   }, []);
 
-  const stompClient = useContext(Context);
-  console.log('home', stompClient);
-  useEffect(() => {
-    // @ts-ignore
-    stompClient.subscribe('/topic/messages', (messageOutput: Message) => {
-      const message = JSON.parse(messageOutput.body);
-      console.log(message);
-      setReceivedMessage(message);
-      setShowNotification(true);
-    });
-  }, []);
+  const onError = (err: any) => {
+    console.log(err);
+  }
+  const onMessageReceived = (payload: Message) => {
+    const payloadData = JSON.parse(payload.body);
+    console.log(payloadData);
+    setReceivedMessage(payloadData);
+    setShowNotification(true);
+  }
+  const onConnected = () => {
+    stompClient.subscribe('/topic/messages', onMessageReceived);
+  }
+
+  const connect = () => {
+    let Sock = new SockJS('http://localhost:8080/reset');
+    stompClient = over(Sock);
+    stompClient.connect({}, onConnected, onError);
+  }
+  connect();
+
+  const sendValue = (messageToSent: OutputMessageDto) => {
+    if (stompClient) {
+      console.log(messageToSent);
+      stompClient.send("/app/reset", {}, JSON.stringify(messageToSent));
+    }
+  }
+
   const deleteCategoryHandler = (): void => {
     CategoryService.deleteCategoryById(idToDelete).then((response) => {
       hideModalHandler();
-      setCategories(categories.filter((category) => category.categoryId !== idToDelete));
       const message: OutputMessageDto = {
         message: `Category with id ${idToDelete} was deleted`,
         time: new Date().toString(),
       }
-      WebSocketService.sendMessage(message);
+      sendValue(message);
+      setCategories(categories.filter((category) => category.categoryId !== idToDelete));
     }).catch((error: any | AxiosError) => {
       console.log(error);
     });
@@ -58,6 +75,16 @@ const HomeView = (): JSX.Element => {
   const hideModalHandler = (): void => {
     setShowModal(false);
   }
+  const handleCloseNotification = () => {
+    CategoryService.getCategories().then((response) => {
+      setCategories(response);
+      console.log(response);
+    }).catch((error: any | AxiosError) => {
+      console.log(error);
+    });
+    setShowNotification(false);
+  }
+
 
   return (
       <Container className="px-4 py-5">
@@ -116,7 +143,7 @@ const HomeView = (): JSX.Element => {
           </Modal.Footer>
         </Modal>
         <ToastContainer position="bottom-end" className="p-3">
-          <Toast onClose={() => setShowNotification(false)} show={showNotification} delay={100000}
+          <Toast onClose={handleCloseNotification} show={showNotification} delay={100000}
                  autohide>
             <Toast.Header>
               <strong className="me-auto">New Message</strong>
