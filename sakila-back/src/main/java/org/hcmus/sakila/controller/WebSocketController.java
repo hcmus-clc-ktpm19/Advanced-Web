@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Controller
 public class WebSocketController extends AbstractApplicationController{
 
-  @MessageMapping("/reset")
+  @MessageMapping("/reset") // /app/reset
   @SendTo("/topic/messages") // send to all user subscribe to this topic
   public OutputMessageDto reset(@Payload OutputMessageDto message){
     System.out.println("From controller " +  message);

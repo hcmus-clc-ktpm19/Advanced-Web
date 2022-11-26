@@ -80,7 +80,7 @@ const CategoryView = (): JSX.Element => {
 
   return (
       <div style={{textAlign: "left"}}>
-        <h1>Edit Category: {category.name}</h1>
+        <h1>Edit Category: {category.categoryId}</h1>
         <Form>
           <Form.Group className="mb-3" controlId="formEditCategory">
             <Form.Label>Category Name</Form.Label>
