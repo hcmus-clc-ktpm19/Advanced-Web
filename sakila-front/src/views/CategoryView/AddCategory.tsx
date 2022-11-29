@@ -4,17 +4,19 @@ import { CategoryDto, OutputMessageDto } from '../../models/model';
 import { CategoryService } from '../../services/CategoryService';
 import { AxiosError } from 'axios';
 import { useHistory } from 'react-router-dom';
-import SockJS from 'sockjs-client';
-import { Client, Message, over } from 'stompjs';
+import { useStompClient } from 'react-stomp-hooks';
+import { Client } from '@stomp/stompjs';
 
-let stompClient: Client;
-const AddCategory = (): JSX.Element => {
+const AddCategory: React.FC = () => {
   const [category, setCategory] = useState<CategoryDto>({
     name: '',
     categoryId: 0,
     lastUpdate: new Date()
   });
+
   const history = useHistory();
+
+  const stompClient: Client | undefined = useStompClient();
 
   const editCategoryNameHandler = (event: React.ChangeEvent<any>): void => {
     setCategory((prevState) => {
@@ -43,29 +45,11 @@ const AddCategory = (): JSX.Element => {
       });
   };
 
-  const onError = (err: any) => {
-    console.log(err);
-  };
-  const onMessageReceived = (payload: Message) => {
-    const payloadData = JSON.parse(payload.body);
-    console.log(payloadData);
-  };
-  const onConnected = () => {
-    stompClient.subscribe('/topic/messages', onMessageReceived);
-  };
-
-  const connect = () => {
-    let Sock = new SockJS('http://localhost:8080/reset');
-    stompClient = over(Sock);
-    stompClient.connect({}, onConnected, onError);
-  };
-  connect();
-
   const sendMessage = (messageToSent: OutputMessageDto) => {
-    if (stompClient) {
-      console.log(messageToSent);
-      stompClient.send('/app/reset', {}, JSON.stringify(messageToSent));
-    }
+    stompClient?.publish({
+      destination: '/app/reset',
+      body: JSON.stringify(messageToSent)
+    });
   };
 
   return (

@@ -14,10 +14,10 @@ const App: React.FC = () => {
       <Switch>
         <StompSessionProvider url="http://localhost:8080/reset">
           <Route exact path="/" component={HomeView} />
+          <Route path={'/categories/insert'} component={AddCategory} />
+          <Route path={'/categories/:id'} component={CategoryView} />
+          <Route path={'/error'} component={ErrorView} />
         </StompSessionProvider>
-        <Route path={'/categories/insert'} component={AddCategory} />
-        <Route path={'/categories/:id'} component={CategoryView} />
-        <Route path={'/error'} component={ErrorView} />
       </Switch>
     </div>
   );

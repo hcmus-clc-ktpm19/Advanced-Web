@@ -8,27 +8,7 @@ import { Message } from 'stompjs';
 import { useStompClient, useSubscription } from 'react-stomp-hooks';
 import { Client } from '@stomp/stompjs';
 
-const HomeView = (): JSX.Element => {
-  const [categories, setCategories] = useState<CategoryDto[]>([]);
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const [idToDelete, setIdToDelete] = useState<number>(-1);
-  const [showNotification, setShowNotification] = useState<boolean>(false);
-  const [receivedMessage, setReceivedMessage] = useState<OutputMessageDto>({
-    message: '',
-    time: ''
-  });
-  const stompClient: Client | undefined = useStompClient();
-
-  useEffect(() => {
-    CategoryService.getCategories()
-      .then((response) => {
-        setCategories(response);
-      })
-      .catch((error: any | AxiosError) => {
-        console.error(error);
-      });
-  }, []);
-
+const HomeView: React.FC = (): JSX.Element => {
   const onMessageReceived = (payload: Message) => {
     const payloadData = JSON.parse(payload.body);
     setReceivedMessage(payloadData);
@@ -36,17 +16,15 @@ const HomeView = (): JSX.Element => {
   };
 
   const sendMessage = (messageToSent: OutputMessageDto) => {
-    if (stompClient) {
-      stompClient.publish({
-        destination: '/app/reset',
-        body: JSON.stringify(messageToSent)
-      });
-    }
+    stompClient?.publish({
+      destination: '/app/reset',
+      body: JSON.stringify(messageToSent)
+    });
   };
 
   const deleteCategoryHandler = (): void => {
     CategoryService.deleteCategoryById(idToDelete)
-      .then((response) => {
+      .then(() => {
         hideModalHandler();
         const message: OutputMessageDto = {
           message: `Category with id ${idToDelete} was deleted`,
@@ -79,6 +57,27 @@ const HomeView = (): JSX.Element => {
     setShowNotification(false);
   };
 
+  const [categories, setCategories] = useState<CategoryDto[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [idToDelete, setIdToDelete] = useState<number>(-1);
+  const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [receivedMessage, setReceivedMessage] = useState<OutputMessageDto>({
+    message: '',
+    time: ''
+  });
+
+  const stompClient: Client | undefined = useStompClient();
+
+  useEffect(() => {
+    CategoryService.getCategories()
+      .then((response) => {
+        setCategories(response);
+      })
+      .catch((error: any | AxiosError) => {
+        console.error(error);
+      });
+  }, []);
+
   useSubscription('/topic/messages', onMessageReceived);
 
   return (
@@ -99,7 +98,7 @@ const HomeView = (): JSX.Element => {
           </tr>
         </thead>
         <tbody>
-          {categories.map((category) => {
+          {categories.map((category: CategoryDto) => {
             return (
               <tr key={category.categoryId}>
                 <td>{category.categoryId}</td>
@@ -113,8 +112,7 @@ const HomeView = (): JSX.Element => {
                   <Button
                     variant={'danger'}
                     className={'float-end'}
-                    onClick={() => setUpModalHandler(category.categoryId)}
-                  >
+                    onClick={() => setUpModalHandler(category.categoryId)}>
                     Delete
                   </Button>
                 </td>
