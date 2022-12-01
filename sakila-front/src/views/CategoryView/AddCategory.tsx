@@ -1,7 +1,7 @@
 import { Button, Form } from 'react-bootstrap';
 import React, { useState } from 'react';
-import { CategoryDto, OutputMessageDto } from '../../models/model';
-import { CategoryService } from '../../services/CategoryService';
+import { CategoryDto, OutputMessageDto } from '@models/model';
+import { CategoryService } from '@services/CategoryService';
 import { AxiosError } from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useStompClient } from 'react-stomp-hooks';
@@ -18,7 +18,7 @@ const AddCategory: React.FC = () => {
 
   const stompClient: Client | undefined = useStompClient();
 
-  const editCategoryNameHandler = (event: React.ChangeEvent<any>): void => {
+  const editCategoryNameHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setCategory((prevState) => {
       return {
         ...prevState,
@@ -62,7 +62,7 @@ const AddCategory: React.FC = () => {
             type="text"
             placeholder="Enter category name"
             value={category.name}
-            onChange={(event) => editCategoryNameHandler(event)}
+            onChange={editCategoryNameHandler}
           />
         </Form.Group>
         <Button variant="primary" type="submit" onClick={submitBtnHandler}>

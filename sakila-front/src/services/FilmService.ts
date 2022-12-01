@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FilmDto } from '../models/model';
+import { FilmDto } from '@models/model';
 
 export const FilmService = {
   getFilms: async (): Promise<FilmDto[]> => {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
-import { CategoryDto, OutputMessageDto } from '../../models/model';
-import { CategoryService } from '../../services/CategoryService';
+import { CategoryDto, OutputMessageDto } from '@models/model';
+import { CategoryService } from '@services/CategoryService';
 import { AxiosError } from 'axios';
 import { Client } from '@stomp/stompjs';
 import { useStompClient } from 'react-stomp-hooks';

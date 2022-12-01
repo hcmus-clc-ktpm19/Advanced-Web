@@ -1,17 +1,17 @@
 import SockJS from 'sockjs-client';
 import { Client, Frame, Message, over } from 'stompjs';
-import { OutputMessageDto } from '../models/model';
+import { OutputMessageDto } from '@models/model';
 
 let stompClient: Client;
 
-const onConnect = (frame?: Frame): any => {
+const onConnect = (frame?: Frame): void => {
   console.log('Connected: ' + frame);
   stompClient.subscribe('/topic/messages', function (messageOutput: Message): any {
     console.log(JSON.parse(messageOutput.body));
   });
 };
 
-const onError = (error: Frame | string): any => {
+const onError = (error: Frame | string): void => {
   console.error(error);
 };
 

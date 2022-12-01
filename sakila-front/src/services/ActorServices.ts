@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ActorDto } from '../models/model';
+import { ActorDto } from '@models/model';
 
 export const ActorService = {
   getActors: async (): Promise<ActorDto[]> => {

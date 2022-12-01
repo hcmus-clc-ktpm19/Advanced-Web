@@ -1,7 +1,7 @@
 import { Button, Container, Modal, Table, Toast, ToastContainer } from 'react-bootstrap';
-import { CategoryDto, OutputMessageDto } from '../../models/model';
+import { CategoryDto, OutputMessageDto } from '@models/model';
 import React, { useEffect, useState } from 'react';
-import { CategoryService } from '../../services/CategoryService';
+import { CategoryService } from '@services/CategoryService';
 import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
 import { Message } from 'stompjs';

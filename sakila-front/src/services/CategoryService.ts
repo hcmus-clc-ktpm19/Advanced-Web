@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CategoryDto } from '../models/model';
+import { CategoryDto } from '@models/model';
 
 export const CategoryService = {
   getCategories: async (): Promise<CategoryDto[]> => {
