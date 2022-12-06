@@ -17,7 +17,7 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - '../db/sakila-mysql.sql:/docker-entrypoint-initdb.d/sakila-mysql.sql'
+      - '../../db/sakila-mysql.sql:/docker-entrypoint-initdb.d/sakila-mysql.sql'
 
   rabbitmq:
       hostname: localhost
