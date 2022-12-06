@@ -7,6 +7,10 @@ spring:
     url: jdbc:mysql://localhost:3306/SAKILA
     username: root
     password: admin
+
+  rabbitmq:
+    stomp-port: 61613
+
 springdoc:
   api-docs:
     path: /api-docs

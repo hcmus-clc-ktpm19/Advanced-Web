@@ -1,37 +1,38 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.0.1157 on 2022-11-22 21:50:56.
+// Generated using typescript-generator version 3.0.1157 on 2022-12-06 10:46:59.
 
 export interface ActorDto {
-  id: number;
-  firstName: string;
-  lastName: string;
+    id: number;
+    firstName: string;
+    lastName: string;
 }
 
 export interface FilmDto {
-  filmId: number;
-  title: string;
-  description: string;
-  releaseYear: number;
-  languageId: number;
-  originalLanguageId: number;
-  rentalDuration: number;
-  rentalRate: number;
-  length: number;
-  replacementCost: number;
-  rating: string;
-  specialFeatures: string;
+    filmId: number;
+    title: string;
+    description: string;
+    releaseYear: number;
+    languageId: number;
+    originalLanguageId: number;
+    rentalDuration: number;
+    rentalRate: number;
+    length: number;
+    replacementCost: number;
+    rating: string;
+    specialFeatures: string;
 }
 
 export interface CategoryDto extends Serializable {
-  categoryId: number;
-  name: string;
-  lastUpdate: Date;
+    categoryId: number;
+    name: string;
+    lastUpdate: Date;
 }
 
 export interface OutputMessageDto {
-  message: string;
-  time: string;
+    message: string;
+    time: string;
 }
 
-export interface Serializable {}
+export interface Serializable {
+}

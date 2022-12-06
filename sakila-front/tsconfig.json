@@ -16,12 +16,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["src/*"],
-      "@assets/*": ["src/assets/*"],
-      "@components/*": ["src/components/*"],
-      "@models/*": ["src/models/*"],
-      "@views/*": ["src/views/*"],
-      "@services/*": ["src/services/*"]
+      "@/*": ["./src/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@models/*": ["./src/models/*"],
+      "@views/*": ["./src/views/*"],
+      "@services/*": ["./src/services/*"]
     }
   },
   "include": ["src"],
