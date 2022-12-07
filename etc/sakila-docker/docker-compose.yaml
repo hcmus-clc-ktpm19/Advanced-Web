@@ -1,12 +1,13 @@
-version: '3'
+version: '3.7'
 services:
   mysql:
-    image: mysql:8.0.31
+    container_name: sakila-mysql-container
+    image: mysql:5.7
     deploy:
       resources:
         limits:
-          cpus: '0.50'
-          memory: 512M
+          cpus: '0.25'
+          memory: 256M
         reservations:
           cpus: '0.25'
           memory: 256M
